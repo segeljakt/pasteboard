@@ -1,0 +1,23 @@
+[package]
+name = "pasteboard"
+version = "0.1.0"
+authors = ["Klas Segeljakt <klasseg@kth.se>"]
+edition = "2018"
+description = "CLI and Rust bindings for interacting with the macOS pasteboard."
+repository = "https://github.com/segeljakt/pasteboard"
+homepage = "https://github.com/segeljakt/pasteboard"
+keywords = ["macOS", "FFI", "pasteboard", "clipboard"]
+license = "MIT"
+
+[dependencies]
+cocoa = "0.19.0"
+structopt = "0.2.18"
+objc = "0.2.6"
+
+[lib]
+name = "pasteboard"
+path = "src/lib.rs"
+
+[[bin]]
+name = "pb"
+path = "src/main.rs"
