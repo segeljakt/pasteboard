@@ -15,9 +15,9 @@ enum Command {
         #[structopt(
             long = "type",
             short = "t",
-            raw(possible_values = "&Pasteboard::variants()"),
+            possible_values = &Pasteboard::variants(),
             case_insensitive = true,
-            raw(default_value = "&Pasteboard::variants()[0]"),
+            default_value = &Pasteboard::variants()[0],
             help = "Data type of file contents"
         )]
         pb: Pasteboard,
@@ -29,9 +29,9 @@ enum Command {
         #[structopt(
             long = "type",
             short = "t",
-            raw(possible_values = "&Pasteboard::variants()"),
+            possible_values = &Pasteboard::variants(),
             case_insensitive = true,
-            raw(default_value = "&Pasteboard::variants()[0]"),
+            default_value = &Pasteboard::variants()[0],
             help = "Data type of file contents"
         )]
         pb: Pasteboard,
