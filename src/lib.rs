@@ -60,10 +60,26 @@ impl Pasteboard {
         let options = NSDictionary::dictionary(pool);
 
         let pasteboard = NSPasteboard::generalPasteboard(pool);
-        if pasteboard.canReadObjectForClasses_options(class_array, options) != 0 {
+
+        let ok = {
+            #[cfg(not(big_sur_update))]
+            {
+                pasteboard.canReadObjectForClasses_options(class_array, options) != 0
+            }
+            #[cfg(big_sur_update)]
+            {
+                pasteboard.canReadObjectForClasses_options(class_array, options)
+            }
+        };
+
+        if ok {
             let objects_to_paste = pasteboard.readObjectsForClasses_options(class_array, options);
             let object = objects_to_paste.objectAtIndex(0);
+
+            #[cfg(not(big_sur_update))]
             NSData::writeToFile_atomically_(object, path, 0);
+            #[cfg(big_sur_update)]
+            NSData::writeToFile_atomically_(object, path, false);
         }
     }
 }

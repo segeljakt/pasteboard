@@ -9,11 +9,15 @@ repository = "https://github.com/segeljakt/pasteboard"
 homepage = "https://github.com/segeljakt/pasteboard"
 keywords = ["macOS", "FFI", "pasteboard", "clipboard"]
 license = "MIT"
+build = "build.rs"
 
 [dependencies]
 cocoa = "0.24.0"
 structopt = "0.3.21"
 objc = "0.2.7"
+
+[build-dependencies]
+os_info = "3.0.1"
 
 [lib]
 name = "pasteboard"
