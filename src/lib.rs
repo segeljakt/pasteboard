@@ -1,3 +1,4 @@
+use compatibility::IntoExpected;
 use {
     cocoa::{
         appkit::{NSImage, NSPasteboard, NSSound},
@@ -7,7 +8,10 @@ use {
     objc::{class, msg_send, runtime::Object, sel, sel_impl},
     structopt::clap::arg_enum,
 };
+
 pub type Id = *mut Object;
+
+mod compatibility;
 
 arg_enum! {
     #[derive(Debug)]
@@ -61,25 +65,13 @@ impl Pasteboard {
 
         let pasteboard = NSPasteboard::generalPasteboard(pool);
 
-        let ok = {
-            #[cfg(not(big_sur_update))]
-            {
-                pasteboard.canReadObjectForClasses_options(class_array, options) != 0
-            }
-            #[cfg(big_sur_update)]
-            {
-                pasteboard.canReadObjectForClasses_options(class_array, options)
-            }
-        };
+        let ok = pasteboard.canReadObjectForClasses_options(class_array, options);
 
-        if ok {
+        if ok.into_expected() {
             let objects_to_paste = pasteboard.readObjectsForClasses_options(class_array, options);
             let object = objects_to_paste.objectAtIndex(0);
 
-            #[cfg(not(big_sur_update))]
-            NSData::writeToFile_atomically_(object, path, 0);
-            #[cfg(big_sur_update)]
-            NSData::writeToFile_atomically_(object, path, false);
+            NSData::writeToFile_atomically_(object, path, ok.into_expected());
         }
     }
 }
